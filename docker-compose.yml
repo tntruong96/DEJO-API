@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  api-service:
+    container_name: api-service
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    command: 'yarn run start:debug'
+    ports:
+      -  '3000:3000'
+      -  '9229:9229'
+    networks:
+      - blog
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - './data/blog-data:/data/blog-data'
+      
+    
+
+  db:
+    container_name: blog-data
+    image: mariadb:10.6.5-focal
+    networks:
+      - blog
+    restart: always
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+        MYSQL_ROOT_PASSWORD: 'root'
+    ports: 
+        - '3307:3306'
+    volumes:
+        - './data/docker/blog-data:/var/lib/mysql'
+        - './db/init.sql:/docker-entrypoint-initdb.d/init.sql'
+networks:
+    blog:
+volumes:
+    blog-db:
