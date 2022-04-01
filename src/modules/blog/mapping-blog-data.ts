@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { ImageService } from '../image/image.service';
 import { BlogResponseDTO } from './blog.dto';
 import { BlogEntity } from './blog.entity';
+import {IMappingBlogData} from '../../interfaces/mapping-blog.interface'
 
 // type MappingResponseType<T extends BlogResponseDTO | BlogResponseDTO[]> = T extends BlogResponseDTO ? BlogResponseDTO : BlogResponseDTO[];
 
