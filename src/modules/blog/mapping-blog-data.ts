@@ -35,7 +35,7 @@ export class MappingBlogData implements IMappingBlogData<BlogEntity, BlogRespons
   }
 
   async singleMap(blogData: BlogEntity): Promise<BlogResponseDTO> {
-    const imageId: number[] = JSON.parse(blogData.images);
+  const imageId: number[] = JSON.parse(blogData.images);
     const image = await this.imageService.findById(imageId[0]);
     const response = plainToClass(BlogResponseDTO, blogData);
     response.thumb = image.path;

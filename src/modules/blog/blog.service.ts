@@ -39,10 +39,11 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
         if(!needItem){
             throw new HttpException("Not Found This Item In Database", HttpStatus.NOT_FOUND)
         }
-
+        needItem.category = updateDTO.category,
         needItem.content = updateDTO.content,
         needItem.title = updateDTO.title,
-        needItem.status = updateDTO.status
+        needItem.status = updateDTO.status,
+        needItem.images = updateDTO.images
 
         const entity = super.updateEntity(needItem);
         return entity ? entity : null;
@@ -81,9 +82,11 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
 
     async findBySlug(slug): Promise<BlogResponseDTO> {
         try {
-            const blog = await this.repository.findOne({where:{slug}});
-            const responseDTO = await this.mappingBlogData.singleMap(blog);
-            return responseDTO;
+            const blog = await this.repository.findOne({where:{slug}, relations:["category", "createdBy"]});
+            if(blog){
+                const responseDTO = await this.mappingBlogData.singleMap(blog);
+                return responseDTO;
+            }     
         } catch (error) {
             console.log(error);
         }

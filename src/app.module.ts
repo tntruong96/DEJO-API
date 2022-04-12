@@ -13,11 +13,14 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { ImageModule } from './modules/image/image.module';
 import { MulterModule } from '@nestjs/platform-express';
 
+const getEnvironment = () => {
+  return `.env.${process.env.NODE_ENV ? process.env.NODE_ENV : 'production'}`
+}
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [".env"]
+      envFilePath: [".env", getEnvironment()]
     }),
     TypeOrmModule.forRootAsync(
       {
