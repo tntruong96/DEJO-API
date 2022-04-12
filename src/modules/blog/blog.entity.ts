@@ -38,7 +38,7 @@ export class BlogEntity extends BaseEntity{
 
     @OneToOne(() => BlogCategoriesEntity)
     @JoinColumn({name: 'categoryId', referencedColumnName: 'id'})
-    categoryId: number
+    category: number
 
     @BeforeInsert()
     onInsert(){

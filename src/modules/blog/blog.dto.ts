@@ -16,11 +16,11 @@ export class BlogCreateDTO  {
     createdBy: User;
 
     @IsNotEmpty()
-    categoryId: number;
+    category: number;
 
     @IsNotEmpty()
     @IsString()
-    images: string[];
+    images: string;
 
     status: number;
 }
@@ -56,4 +56,7 @@ export class BlogResponseDTO {
 
     @Expose()
     updatedAt: Date;
+
+    @Expose()
+    category: BlogCategoriesEntity;
 }
