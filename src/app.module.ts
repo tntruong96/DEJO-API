@@ -13,15 +13,21 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { ImageModule } from './modules/image/image.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './common/exception/AllExceptionFilter';
+import * as dotenv from 'dotenv'
+
+dotenv.config({
+  path: `../.env.${process.env.NODE_ENV}` 
+})
 
 const getEnvironment = () => {
-  return `.env.${process.env.NODE_ENV ? process.env.NODE_ENV : 'production'}`
+  console.log(process.env.NODE_ENV );
+  return `.env${process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ''}`
 }
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [".env", getEnvironment()]
+      envFilePath: [getEnvironment()]
     }),
     TypeOrmModule.forRootAsync(
       {
