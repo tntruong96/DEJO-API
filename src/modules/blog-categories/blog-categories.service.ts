@@ -22,7 +22,6 @@ export class BlogCategoriesService extends BaseService<
           const createdEntity = await super.createEntity(entity);
           return createdEntity;
       } catch (error) {
-          // console.log(error);
           throw new HttpException(error, HttpStatus.BAD_REQUEST);
       }
   }
