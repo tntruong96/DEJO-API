@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,6 +12,7 @@ import { BlogCategoriesModule } from './modules/blog-categories/blog-categories.
 import { CommentsModule } from './modules/comments/comments.module';
 import { ImageModule } from './modules/image/image.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { AllExceptionFilter } from './common/exception/AllExceptionFilter';
 
 const getEnvironment = () => {
   return `.env.${process.env.NODE_ENV ? process.env.NODE_ENV : 'production'}`
@@ -42,14 +43,15 @@ const getEnvironment = () => {
     BlogCategoriesModule,
     CommentsModule,
     BlogModule,
-    ImageModule
+    ImageModule,
   ],
   controllers: [AppController],
   providers: [AppService, 
     {
       provide: APP_FILTER,
-      useClass: CustomExceptionFilter
-    }
+      useClass: AllExceptionFilter
+    },
+    Logger
   ],
 })
 export class AppModule {}
