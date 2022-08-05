@@ -1,9 +1,9 @@
 import { beforeInsert, beforeUpdate } from "../../utils/entity";
-import { BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { BlogEntity } from "../blog/blog.entity";
+import { BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('blog-categories')
-export class BlogCategoriesEntity extends BaseEntity {
+
+@Entity('product-categories')
+export class ProductCategoriesEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -12,14 +12,16 @@ export class BlogCategoriesEntity extends BaseEntity {
     name: string;
 
     @Column()
-    createdAt: Date;
-
-    @Column()
-    updatedAt: Date;
+    slug: string;
 
     @Column()
     status: number;
 
+    @Column()
+    createdAt: Date;
+
+    @Column()
+    updatedAt: Date;
 
     @BeforeInsert()
     onInsert(){

@@ -13,14 +13,10 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { ImageModule } from './modules/image/image.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './common/exception/AllExceptionFilter';
-import * as dotenv from 'dotenv'
-
-dotenv.config({
-  path: `../.env.${process.env.NODE_ENV}` 
-})
+import { ProductCategoriesModule } from './modules/product-categories/product-categories.module';
+import { ProductModule } from './modules/product/product.module';
 
 const getEnvironment = () => {
-  console.log(process.env.NODE_ENV );
   return `.env${process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ''}`
 }
 @Module({
@@ -50,6 +46,8 @@ const getEnvironment = () => {
     CommentsModule,
     BlogModule,
     ImageModule,
+    ProductCategoriesModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService, 

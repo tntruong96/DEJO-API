@@ -33,8 +33,13 @@ export class BlogCategoriesController {
       return this.blogCategoriesService.getBlogCategories();
   }
 
-  @Delete('/:id')
+  @Delete('/delete-id/:id')
   delete(@Param() id: number){
     return this.blogCategoriesService.deleteEntity(id);
+  }
+
+  @Delete("/delete-all")
+  deleteAll(@Body() body: []){
+    return this.blogCategoriesService.deleteAll(body);
   }
 }

@@ -25,6 +25,7 @@ export class BlogController {
       return this.blogService.deleteEntity(id);
   }
 
+
   @Get()
   // @UseInterceptors(TransformBlogRespone)
   getBlogs(@Req() req):Promise<PaginateResponse<BlogResponseDTO>>{
@@ -40,6 +41,11 @@ export class BlogController {
   @Put('/update-status/:id')
   updateStatus(@Param() id: number, status: boolean){
     return this.blogService.updateStatus(id, status);
+  }
+
+  @Delete('/delete-multi')
+  async deleteMulti(@Body() ids: []){
+    return this.blogService.deleteMultiEntity(ids);
   }
 
 }

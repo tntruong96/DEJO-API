@@ -43,7 +43,7 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
         needItem.content = updateDTO.content,
         needItem.title = updateDTO.title,
         needItem.status = updateDTO.status,
-        needItem.images = updateDTO.images
+        needItem.thumbnail = updateDTO.thumbnail
 
         const entity = super.updateEntity(needItem);
         return entity ? entity : null;
@@ -57,6 +57,7 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
                 cache: true
             });
 
+
             //mapping thumb path for blog
             const response = await this.mappingBlogData.multipleMap(blogs);
             return {
@@ -64,7 +65,7 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
                 total
             };
         } catch (error) {
-            throw new HttpException("NOT FOUND ANY BLOG", HttpStatus.NOT_FOUND);
+            throw error;
         }
     }
 
