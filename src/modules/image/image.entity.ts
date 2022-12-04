@@ -7,8 +7,8 @@ import { BlogEntity } from "../blog/blog.entity";
 @Entity('images')
 class ImagesEntity extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     path: string;
@@ -21,6 +21,12 @@ class ImagesEntity extends BaseEntity {
 
     @Column()
     status: number;
+
+    @Column()
+    name: string;
+
+    @Column()
+    type: string;
 
 
     @BeforeInsert()

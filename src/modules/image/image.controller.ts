@@ -1,11 +1,13 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Req,
   UploadedFile,
   UploadedFiles,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -14,11 +16,8 @@ import { createDatePath, editFileName, imageFileFilter } from '../../utils/image
 import { Image as IImage} from '../../interfaces/image.interface'
 import { State } from '../../interfaces/state.interface';
 import { ImageService } from './image.service';
-import JwtAuthenticationGuard from '../auth/jwt-authentication.guard';
-import { TransformBlogRespone } from 'src/common/interceptors/transform-blog-data.interceptor';
-import { Public } from 'src/common/decorators/public.decorator';
 
-@Controller('upload-image')
+@Controller('image')
 export class ImageController {
 
   constructor(private readonly imageService: ImageService) {
@@ -26,7 +25,6 @@ export class ImageController {
   }
   
 
-  @UseGuards(JwtAuthenticationGuard)
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
@@ -41,6 +39,8 @@ export class ImageController {
     const createDto: IImage = {
       path: file.path,
       status: State.Enable,
+      name: file.name,
+      type: file.type
     }
 
     const respone = this.imageService.createNew(createDto);
@@ -48,7 +48,7 @@ export class ImageController {
     return respone;
   }
 
-  @UseGuards(JwtAuthenticationGuard)
+
   @Post('multi')
   @UseInterceptors(
     FilesInterceptor('file', 20,{
@@ -65,6 +65,8 @@ export class ImageController {
           const createDto = {
               path: file.path,
               status: State.Enable,
+              name: file.originalname,
+              type: file.mimetype
           }
           createDtos.push(createDto);
       });
@@ -73,9 +75,26 @@ export class ImageController {
 
   }
 
-  @UseGuards(JwtAuthenticationGuard)
   @Get(":id")
   async getImage(@Param() id){
     return this.imageService.getImageById(id);
   }
+
+
+  @Get()
+  async getImages(@Req() req){
+    return this.imageService.getImagesByPage({limit:req.query.hasOwnProperty('limit') ? req.query.limit : 50, page: req.query.hasOwnProperty('page') ? req.query.page : 1})
+  }
+
+  @Get()
+  async getAllImages() {
+    // return this.imageService.getAllImages();
+  }
+
+  @Delete("delete")
+  async deleteImages(@Body() data){
+    return this.imageService.deleteMultiImage(data.ids);
+  }
+
+  
 }

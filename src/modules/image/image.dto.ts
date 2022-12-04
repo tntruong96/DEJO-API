@@ -4,13 +4,17 @@ import path from "path";
 
 export class ImageCreateDTO {
     @IsNotEmpty()
-    path: string
+    path: string;
+
+    name: string;
+
+    type: string;
  
 }
 
 export class ImageResponstDTO{
     @Expose()
-    id: number;
+    id: string;
 
     @Expose()
     path: string;

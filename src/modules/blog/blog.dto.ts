@@ -16,12 +16,17 @@ export class BlogCreateDTO  {
     createdBy: User;
 
     @IsNotEmpty()
-    category: number;
+    category: string;
 
     @IsNotEmpty()
     @IsString()
-    images: string;
+    thumbnail: string;
 
+
+    @IsNotEmpty()
+    @IsString()
+    shortContent:string;
+    
     status: number;
 }
 
@@ -52,7 +57,10 @@ export class BlogResponseDTO {
     images: string[];
 
     @Expose()
-    thumb: string;
+    thumbnailPath: string;
+
+    @Expose()
+    thumbnail: string []
 
     @Expose()
     updatedAt: Date;

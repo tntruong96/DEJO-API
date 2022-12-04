@@ -3,4 +3,6 @@ export interface Image {
     status: number,
     createdAt?: Date,
     updatedAt?: Date
+    name: string,
+    type: string
 }

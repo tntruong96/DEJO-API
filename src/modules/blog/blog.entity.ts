@@ -8,8 +8,8 @@ import { BlogCategoriesEntity } from '../blog-categories/blog-categories.entity'
 @Entity({name: "blogs"})
 export class BlogEntity extends BaseEntity{
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     title: string;
@@ -29,16 +29,19 @@ export class BlogEntity extends BaseEntity{
     @Column()
     updatedAt: Date;
 
+    @Column()
+    shortContent: string;
+
     @ManyToOne(() => User)
     @JoinColumn({name: "createdBy" ,referencedColumnName: "id"})
     createdBy: User;
 
     @Column()
-    images: string;
+    thumbnail: string;
 
     @OneToOne(() => BlogCategoriesEntity)
     @JoinColumn({name: 'categoryId', referencedColumnName: 'id'})
-    category: number
+    category: string
 
     @BeforeInsert()
     onInsert(){

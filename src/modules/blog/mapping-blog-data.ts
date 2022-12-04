@@ -17,7 +17,7 @@ export class MappingBlogData implements IMappingBlogData<BlogEntity, BlogRespons
     const response = [];
     const imageIds = new Set<number>();
     blogData.forEach((blog) => {
-      const imageId: number[] = JSON.parse(blog.images);
+      const imageId: number[] = JSON.parse(blog.thumbnail);
       if (imageId.length > 0) {
         imageIds.add(imageId[0]);
       }
@@ -25,8 +25,8 @@ export class MappingBlogData implements IMappingBlogData<BlogEntity, BlogRespons
     const images = await this.imageService.getImageByIds([...imageIds]);
     blogData.map((blog) => {
       const blogResponse = plainToClass(BlogResponseDTO, blog);
-      blogResponse.thumb = images.find((image) => {
-        const imageId = JSON.parse(blog.images)[0];
+      blogResponse.thumbnailPath = images.find((image) => {
+        const imageId = JSON.parse(blog.thumbnail)[0];
         return image.id === imageId;
       }).path;
       response.push(blogResponse);
@@ -35,10 +35,10 @@ export class MappingBlogData implements IMappingBlogData<BlogEntity, BlogRespons
   }
 
   async singleMap(blogData: BlogEntity): Promise<BlogResponseDTO> {
-  const imageId: number[] = JSON.parse(blogData.images);
+  const imageId: number[] = JSON.parse(blogData.thumbnail);
     const image = await this.imageService.findById(imageId[0]);
     const response = plainToClass(BlogResponseDTO, blogData);
-    response.thumb = image.path;
+    response.thumbnailPath = image.path;
     return response;
   }
 }

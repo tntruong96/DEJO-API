@@ -16,7 +16,7 @@ export class BlogController {
   }
 
   @Put('update/:id')
-  updateBlog(@Body() blogUpdateDTO: BlogCreateDTO, @Param() id: number) {
+  updateBlog(@Body() blogUpdateDTO: BlogCreateDTO, @Param() id: string) {
     return this.blogService.update(id, blogUpdateDTO);
   }
 
@@ -24,6 +24,7 @@ export class BlogController {
   deleteBlog(@Param() id: number){
       return this.blogService.deleteEntity(id);
   }
+
 
   @Get()
   // @UseInterceptors(TransformBlogRespone)
@@ -40,6 +41,11 @@ export class BlogController {
   @Put('/update-status/:id')
   updateStatus(@Param() id: number, status: boolean){
     return this.blogService.updateStatus(id, status);
+  }
+
+  @Delete('/delete-multi')
+  async deleteMulti(@Body() ids: []){
+    return this.blogService.deleteMultiEntity(ids);
   }
 
 }

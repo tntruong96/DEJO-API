@@ -6,9 +6,9 @@ import { DeepPartial, BaseEntity } from 'typeorm';
 export interface IBaseService<T> {
   //Query//
 
-  findById: (id: number) => Promise<T>;
+  findById: (id: number | string) => Promise<T>;
 
-  findByIds: (ids: number[]) => Promise<T[]>;
+  findByIds: (ids: number[] | string[]) => Promise<T[]>;
 
   //mutation
 
@@ -16,7 +16,7 @@ export interface IBaseService<T> {
 
   updateEntity: (entity: DeepPartial<T>) => Promise<boolean>;
 
-  deleteEntity: (id: number) => Promise<boolean>;
+  deleteEntity: (id: number | string) => Promise<boolean>;
 }
 
 export class BaseService<T extends BaseEntity, R extends Repository<T>> implements IBaseService<T> {
@@ -28,7 +28,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
 
   logger = new Logger(BaseService.name);
 
-  async findById(id: number) {
+  async findById(id: number | string) {
     const entity = await this.repository.findOne(id);
     if (!entity) {
       throw new HttpException('Entity Not Exists', HttpStatus.BAD_REQUEST);
@@ -37,7 +37,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
   }
 
 
-  async findByIds(ids: number[]) {
+  async findByIds(ids: number[] | string[]) {
     const entity = await this.repository.findByIds(ids);
     if (!entity) {
       throw new HttpException('Entity not Exists!', HttpStatus.BAD_REQUEST);
@@ -69,7 +69,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
   };
 
 
-  async deleteEntity(id: number){
+  async deleteEntity(id: number | string){
       return this.repository.delete(id).then(() => {
         this.logger.log('Deleted Successfully!');
         return true
@@ -80,4 +80,16 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>> implemen
         }
       })
   };
+
+  async deleteMultiEntity(ids: number[] | string[]){
+      return await this.repository.delete(ids).then(() => {
+        this.logger.log('Deleted Successfully!');
+        return true
+      }).catch((error) => {
+        {
+            this.logger.log(error);
+            return false;
+        }
+      })
+  }
 }
