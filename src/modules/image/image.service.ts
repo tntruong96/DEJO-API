@@ -51,6 +51,9 @@ export class ImageService extends BaseService<ImagesEntity, ImageReopository> {
   getImagesByPage = async (option: Options) => {
     try {
       const images = await this.repository.findAndCount({
+        order: {
+          createdAt: "DESC"
+        },
         take: option.limit,
         skip: option.limit * (option.page - 1),
         cache: true

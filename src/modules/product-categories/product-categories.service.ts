@@ -16,7 +16,7 @@ export class ProductCategoriesService extends BaseService<ProductCategoriesEntit
     async  createNewProductCategory(dto: createProductCategoryDTO) {
         try {
             const entity = plainToClass(ProductCategoriesEntity, dto);
-            entity.slug = slugify(dto.name);
+            entity.slug = slugify(dto.name.toLowerCase());
             entity.status = State.Enable;
             const createdEntity = await this.createEntity(entity);
             return createdEntity;
@@ -26,9 +26,15 @@ export class ProductCategoriesService extends BaseService<ProductCategoriesEntit
 
     }
 
-    async getProductCategory(){
+    async getProductCategory(option){
         try {
-            return await this.repository.find();
+            return await this.repository.findAndCount({
+                order: {
+                    createdAt: "DESC"
+                },
+                take: option.limit,
+                skip: option.limit* (option.page -1),
+            });
         } catch (error) {
             this.logger.error(error);
             

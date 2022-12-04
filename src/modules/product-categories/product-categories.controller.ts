@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import JwtAuthenticationGuard from '../auth/jwt-authentication.guard';
 import { createProductCategoryDTO } from './product-categories.dto';
 import { ProductCategoriesService } from './product-categories.service';
@@ -17,8 +17,8 @@ export class ProductCategoriesController {
 
 
      @Get('')
-     async getProductCategory(){
-         return await this.productCategoriesService.getProductCategory();
+     async getProductCategory(@Req() req){
+         return await this.productCategoriesService.getProductCategory({limit:req.query.hasOwnProperty('limit') ? req.query.limit : 10, page: req.query.hasOwnProperty('page') ? req.query.page : 1});
      }
 
     @Delete('/delete:/id')

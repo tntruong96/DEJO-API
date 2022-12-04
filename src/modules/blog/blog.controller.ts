@@ -16,7 +16,7 @@ export class BlogController {
   }
 
   @Put('update/:id')
-  updateBlog(@Body() blogUpdateDTO: BlogCreateDTO, @Param() id: number) {
+  updateBlog(@Body() blogUpdateDTO: BlogCreateDTO, @Param() id: string) {
     return this.blogService.update(id, blogUpdateDTO);
   }
 

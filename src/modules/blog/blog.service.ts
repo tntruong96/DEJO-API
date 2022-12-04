@@ -34,7 +34,7 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
         }
     }
 
-    update = async (id: number, updateDTO: BlogCreateDTO) => {
+    update = async (id: string, updateDTO: BlogCreateDTO) => {
         const needItem = await this.repository.findOne(id);
         if(!needItem){
             throw new HttpException("Not Found This Item In Database", HttpStatus.NOT_FOUND)
@@ -44,6 +44,7 @@ export class BlogService extends BaseService<BlogEntity, BlogRepository>{
         needItem.title = updateDTO.title,
         needItem.status = updateDTO.status,
         needItem.thumbnail = updateDTO.thumbnail
+        needItem.slug = slugify(updateDTO.title.toLowerCase());
 
         const entity = super.updateEntity(needItem);
         return entity ? entity : null;

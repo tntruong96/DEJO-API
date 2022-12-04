@@ -15,6 +15,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { AllExceptionFilter } from './common/exception/AllExceptionFilter';
 import { ProductCategoriesModule } from './modules/product-categories/product-categories.module';
 import { ProductModule } from './modules/product/product.module';
+import { CampaignModule } from './modules/campaign/campaign.module';
 
 const getEnvironment = () => {
   return `.env${process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : ''}`
@@ -47,7 +48,8 @@ const getEnvironment = () => {
     BlogModule,
     ImageModule,
     ProductCategoriesModule,
-    ProductModule
+    ProductModule,
+    CampaignModule
   ],
   controllers: [AppController],
   providers: [AppService, 

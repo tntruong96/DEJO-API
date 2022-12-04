@@ -36,7 +36,15 @@ export class ProductService  extends BaseService<ProductEntity, ProductRepositor
                 },
                 take: option.limit,
                 skip: option.limit* (option.page -1),
-                cache: true
+                cache: true,
+                relations: [
+                    "categoryId"
+                ],
+                where: option.category ? {
+                    categoryId: {
+                        slug: option.category
+                    }
+                } : {}
             });
             products.map(entity => {
                 entity.price = Number(entity.price);
@@ -79,6 +87,26 @@ export class ProductService  extends BaseService<ProductEntity, ProductRepositor
         try {
             const result = await super.deleteMultiEntity(ids);
             return result;
+        } catch (error) {
+            this.logger.error(error);
+            return error
+        }
+    }
+
+    async getProductFilterByCategory(category: string) {
+        try {
+            const respone = await this.repository.find({
+                relations:["categoryId"],
+                where: {
+                    category: {
+                        slug: category
+                    }
+                },
+                order: {
+                    createdAt: "ASC"
+                }
+            })
+            return respone;
         } catch (error) {
             this.logger.error(error);
             return error

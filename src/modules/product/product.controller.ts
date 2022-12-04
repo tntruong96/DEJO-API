@@ -19,7 +19,7 @@ export class ProductController {
         // if(re){
 
         // }
-        return await this.productService.getProducts({limit:req.query.hasOwnProperty('limit') ? req.query.limit : 10, page: req.query.hasOwnProperty('page') ? req.query.page : 1});
+        return await this.productService.getProducts({limit:req.query.hasOwnProperty('limit') ? req.query.limit : 10, page: req.query.hasOwnProperty('page') ? req.query.page : 1, category: req.query.hasOwnProperty('category') ? req.query.category : ''});
     }
 
     // @Get(`:id`)
@@ -37,5 +37,10 @@ export class ProductController {
     @Delete('/delete-multi')
     async deleteProducts(@Body() body:string[]){
         return await this.productService.deleteMulti(body);
+    }
+
+    @Get('filter/:slug_category')
+    async getProductFilterByCategory(@Param() param){
+        return await this.productService.getProductFilterByCategory(param.slug_category)
     }
 }
